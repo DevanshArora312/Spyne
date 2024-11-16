@@ -10,7 +10,6 @@ import { setToken } from "../redux/slices/auth";
 import ImageSlider from "../components/ImageSlider";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import logo1 from "../assets/smth.jpg"
 
 const SingleCar = () => {
     const {id} = useParams();
@@ -20,7 +19,6 @@ const SingleCar = () => {
     const token = useSelector(state => state.auth.token);
     const [user,setUser] = useState(null)
     const dispatch = useDispatch();
-    const imgs = [logo1,logo1,logo1,logo1,logo1,logo1,logo1];
     useEffect(()=>{
 
         fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/isLoggedIn`,{method:"GET",headers:{"Authorization" : "Bearer " + token}})

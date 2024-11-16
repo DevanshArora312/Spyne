@@ -7,11 +7,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 import CarCard from "../components/CarCard"
+import { setCars } from "../redux/slices/cars";
 const MyCars = () => {
     const [text,setText] = useState("");
     const token = useSelector(state => state.auth.token);
     const [isLogged,setLogged] = useState(false);
-    const [cars,setCarsIn] = useState(null);
+    const carsData = useSelector(state => state.cars.cars);
+    const [cars,setCarsIn] = useState(carsData);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(()=>{
@@ -59,7 +61,8 @@ const MyCars = () => {
         .then(data => {
             console.log(data)
             if(data.success){
-                setCarsIn(data.data)
+                // setCarsIn(data.data)
+                dispatch(setCars(data.data))
             } else{
                 // navigate('/login')
             }
@@ -69,13 +72,14 @@ const MyCars = () => {
         })
     },[dispatch,token])
     useEffect(()=>{
-        if(!cars) return;
-        // const newData = cars.filter(one => one.contains(text));
-        // setCarsIn(newData)
-    },[text,cars])
+        if(!carsData) return;
+        console.log(carsData[0].tags)
+        const newData = carsData.filter(one => one.title.includes(text) || one.desc.includes(text) || one.tags.includes(text) );
+        setCarsIn(newData);
+    },[text])
     return ( 
         <div className="w-screen overflow-x-hidden">
-        <NavBar isLogged={isLogged} text={text} setText={setText}/>
+        <NavBar isLogged={isLogged} text={text} setText={setText} show={true}/>
         <div className="text-2xl flex flex-col justify-center items-start px-[15%] pt-20 w-full">
             <h1 className="pb-10 font-semibold">My Cars!</h1>
             <div className="grid justAbovexl:grid-cols-3 md:grid-cols-2 grid-cols-1 2xl:grid-cols-4 gap-x-6 gap-y-8">

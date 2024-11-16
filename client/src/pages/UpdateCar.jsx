@@ -6,7 +6,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setToken } from "../redux/slices/auth";
 import ImageSlider from "../components/ImageSlider";
-import logo1 from "../assets/smth.jpg"
 
 const UpdateCar = () => {
     const navigate = useNavigate();
@@ -20,7 +19,6 @@ const UpdateCar = () => {
     const {id} = useParams();
     const [isLogged,setLogged] = useState(false);
     const dispatch = useDispatch();
-    const imgs = [logo1,logo1,logo1,logo1,logo1,logo1,logo1];
     
     useEffect(()=>{
         fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/isLoggedIn`,{method:"GET",headers:{"Authorization" : "Bearer " + token}})

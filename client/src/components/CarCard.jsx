@@ -5,7 +5,7 @@ const CarCard = ({title,desc,img,tags}) => {
   return (
     <div className="rounded-xl flex flex-col w-[250px] sm:w-[300px] h-auto p-4 text-black gap-y-3 border-[1px] border-slate-600">
         <div className="w-full flex justify-center">
-            <img src={img ?? logo1} className="w-[250px] sm:w-[300px] aspect-auto cover" />
+            <img src={img ?? logo1} className="w-[250px] h-[250px] sm:w-[300px] aspect-auto cover" />
         </div>
         <strong className="w-full h-8 text-[25px]">{title ? title.length > 25 ? title.slice(0,25)+"..." : title  : "Car title"}</strong>
         <p className="w-full h-20 text-[20px]">

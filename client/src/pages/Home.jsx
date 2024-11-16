@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import { setToken } from "../redux/slices/auth";
 import CarCard from "../components/CarCard";
-
+import { setCars } from "../redux/slices/cars";
 const Home = () => {
     const [text,setText] = useState("");
     const token = useSelector(state => state.auth.token);
     const [isLogged,setLogged] = useState(false);
-    const [cars,setCarsIn] = useState(null);
+    const carsData = useSelector(state => state.cars.cars);
+    const [cars,setCarsIn] = useState(carsData);
     const dispatch = useDispatch();
     useEffect(()=>{
         fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/isLoggedIn`,{method:"GET",headers:{"Authorization" : "Bearer " + token}})
@@ -35,7 +36,7 @@ const Home = () => {
         })
         .then(data => {
             if(data.success){
-                setCarsIn(data.data)
+                dispatch(setCars(data.data));
             } else{
                 // navigate('/login')
             }
@@ -46,11 +47,11 @@ const Home = () => {
         })
     },[dispatch])
     useEffect(()=>{
-        if(!cars) return;
-        const newData = cars;
-        setCarsIn(newData)
-    },[text,cars])
-    console.log(cars)
+        if(!carsData) return;
+        console.log(carsData[0].tags)
+        const newData = carsData.filter(one => one.title.includes(text) || one.desc.includes(text) || one.tags.includes(text) );
+        setCarsIn(newData);
+    },[text])
     return ( 
         <div className="w-[99vw] overflow-x-hidden pb-10">
         <NavBar isLogged={isLogged} text={text} setText={setText} show={true}/>
@@ -61,7 +62,7 @@ const Home = () => {
                     cars && cars.map( (el,index) => {
                         return (
                             <Link to = {`/cars/${el._id}`} key={index}>
-                                <CarCard title={el.title} desc={el.desc} tags={el.tags}/>
+                                <CarCard title={el.title} desc={el.desc} img={el.thumb} tags={el.tags}/>
                             </Link>
                         )
                     })

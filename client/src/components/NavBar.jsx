@@ -12,6 +12,9 @@ const NavBar = ({isLogged,text,setText,show}) => {
     const dispatch = useDispatch();
     const [vis,setVis] = useState(false);
     const navigate = useNavigate();
+    const changeHandler = (e) => {
+        setText(e.target.value);
+    }
     const logoutHandler = () => {
         if(isLogged){
             dispatch(setToken(""));
@@ -34,7 +37,7 @@ const NavBar = ({isLogged,text,setText,show}) => {
                         placeholder="Search a car...."
                         name='search' type='text' 
                         value={text} 
-                        onChange={e => setText(e.target.value)}
+                        onChange={changeHandler}
                     /> : 
                     null
                 }
