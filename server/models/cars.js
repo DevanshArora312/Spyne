@@ -10,7 +10,6 @@ const carSchema = mongoose.Schema(
         desc : {
             type:String,
             required:false,
-            maxLength:500,
         },
         tags: {
             type:String,
