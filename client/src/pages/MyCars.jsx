@@ -74,7 +74,7 @@ const MyCars = () => {
     useEffect(()=>{
         if(!carsData) return;
         console.log(carsData[0].tags)
-        const newData = carsData.filter(one => one.title.includes(text) || one.desc.includes(text) || one.tags.includes(text) );
+        const newData = carsData.filter(one => one.title.toLowerCase().includes(text) || one.desc.toLowerCase().includes(text) || one.tags.toLowerCase().includes(text) );
         setCarsIn(newData);
     },[text])
     return ( 
