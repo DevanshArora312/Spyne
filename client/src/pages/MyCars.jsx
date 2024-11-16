@@ -83,7 +83,7 @@ const MyCars = () => {
                     cars && cars.map( (el,index) => {
                         return (
                             <Link to = {`/cars/${el._id}`} key={index}>
-                                <CarCard title={el.title} desc={el.desc} tags={el.tags}/>
+                                <CarCard title={el.title} desc={el.desc} tags={el.tags} img={el.thumb} />
                             </Link>
                         )
                     })

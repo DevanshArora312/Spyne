@@ -75,7 +75,7 @@ const SingleCar = () => {
                 car && !deleted &&
                 <>  
                     <div className="w-full">
-                        <ImageSlider imgs={imgs} />
+                        <ImageSlider imgs={car.images} />
                     </div>
                     <div className="w-full">
                         <h1 className="text-[30px] font-bold">{car ? car.title : "Car title"}</h1>

@@ -14,6 +14,8 @@ const UpdateCar = () => {
     const [formData,setFormData] = useState({
         title :"",
         desc:"",
+        tags:"",
+        images : []
     })
     const {id} = useParams();
     const [isLogged,setLogged] = useState(false);
@@ -119,7 +121,7 @@ const UpdateCar = () => {
                 Edit Car Info!
             </h1>
             <div className="w-full sm:px-[15%] px-[8%]">
-                <ImageSlider imgs={imgs} />
+                <ImageSlider imgs={formData.images} />
             </div>
             <form className="text-xl w-full flex flex-col gap-10 py-10 px-[10%] justify-center items-center" onSubmit={updateHandler}>
                 <input className="sm:min-w-[0px] min-w-[200px] rounded-lg border-2 focus:outline-none p-2 w-2/3" placeholder="Enter Title" id ="title" name="title" value={formData.title} onChange={changeHandler}/>
