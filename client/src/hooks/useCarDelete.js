@@ -20,6 +20,7 @@ const deleteHandler = (id,setDeleted,token) =>{
                 });
         }
         else{
+
             toast.error('Some Error Occured!', {
                 position: "top-right",
                 autoClose: 1000,
@@ -32,6 +33,9 @@ const deleteHandler = (id,setDeleted,token) =>{
                 });
         }
     }).catch(err => {
+        if(err.message == "t2 is not a function"){
+            return;
+        }
         toast.error(`Some Error Occured! ${err.message}`, {
             position: "top-right",
             autoClose: 1000,

@@ -5,8 +5,8 @@ const { signup,login, isLoggedin, getUser, updateUser } = require("../controller
 
 router.post("/signup",signup);
 router.post("/login",login);
-router.post("/isLoggedIn",auth,isLoggedin);
-router.post("/get-user",auth,getUser);
+router.get("/isLoggedIn",auth,isLoggedin);
+router.get("/get-user",auth,getUser);
 router.put("/update-user",auth,updateUser);
 
 module.exports = router;

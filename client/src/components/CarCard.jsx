@@ -7,11 +7,11 @@ const CarCard = ({title,desc,img,tags}) => {
         <div className="w-full flex justify-center">
             <img src={img ?? logo1} className="w-[250px] sm:w-[300px] aspect-auto cover" />
         </div>
-        <p>{title ? title.length > 25 ? title.slice(0,25)+"..." : title  : "Car title"}</p>
-        <p>
-            {desc ? desc.length > 49 ? desc.slice(0,50)+"..." : desc : "Car desc Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nam, inventore!"}
+        <strong className="w-full h-8 text-[25px]">{title ? title.length > 25 ? title.slice(0,25)+"..." : title  : "Car title"}</strong>
+        <p className="w-full h-20 text-[20px]">
+            {desc ? desc.length > 50 ? desc.slice(0,50)+"..." : desc : "Car desc Lorem ipsum dolor , inventore!"}
         </p>
-        <p><strong>Tags: </strong> {tags ?? "Lorem ipsum dolor sit amet asda adsasd." }</p>
+        <p className="w-full text-[20px]"><span className="font-semibold">Tags: </span> {tags ?? "Lorem ipsum dolor asda adsasd." }</p>
     </div>
   )
 }

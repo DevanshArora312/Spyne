@@ -32,9 +32,8 @@ exports.getUserCar = async (req,res) => {
     try {
         const id = req.user.id;
         const userAcc = await userModel.findById(id).populate("cars").exec();
-        // const todos = await todo.find({});
         const cars = userAcc.cars; 
-        // console.log(todos)
+        // console.log(cars)
         return res.status(200).json(
             {
                 ok:true,
@@ -44,7 +43,7 @@ exports.getUserCar = async (req,res) => {
         )
     }
     catch(err){
-        console.log("Some error occured!");
+        console.log("Some error occured!",err.message);
         return res.status(500).json(
             {
                 ok:false,

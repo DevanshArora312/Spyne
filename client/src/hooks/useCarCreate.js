@@ -1,7 +1,7 @@
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const useTodoCreate = (formData,token) =>{
-    fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/create-todo`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify({formData,token})})
+const useCarCreate = (formData,token) =>{
+    fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/create-car`,{method:"POST",headers:{"Authorization":"Bearer "+token},body:formData})
         .then(res =>{
             return res.json();
         }).then(data=>{
@@ -30,7 +30,10 @@ const useTodoCreate = (formData,token) =>{
             }
 
         }).catch(err => {
-            toast.error('Some Error Occured!', {
+            if(err.message == "t2 is not a function"){
+                return;
+            }
+            toast.error('Some Error Occured!'+err.message, {
                 position: "top-right",
                 autoClose: 1000,
                 hideProgressBar: false,
@@ -43,4 +46,4 @@ const useTodoCreate = (formData,token) =>{
         })
 }
 
-export default useTodoCreate;
+export default useCarCreate;

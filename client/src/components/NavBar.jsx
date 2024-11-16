@@ -40,7 +40,7 @@ const NavBar = ({isLogged,text,setText,show}) => {
                 }
             </form>
             <div className="flex justify-between gap-x-5 text-2xl max-sm:hidden">
-                <Link to="/create-todo" className = "hover:opacity-60">
+                <Link to="/add-car" className = "hover:opacity-60">
                     Add-Car
                 </Link>
                 <Link className = "hover:opacity-60" to="/my-cars">

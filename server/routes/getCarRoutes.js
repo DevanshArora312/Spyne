@@ -9,7 +9,7 @@ const { auth } = require("../middleware/auth");
 
 router.get("/get-cars/",getAllCars);
 router.get("/my-cars/",auth,getUserCar);
-router.get("/get-car/:id",auth,getCarByID);
+router.get("/get-car/:id",getCarByID);
 router.put("/update-car/:id",auth,updateCar);
 router.delete("/delete-car/:id",deleteCar);
 

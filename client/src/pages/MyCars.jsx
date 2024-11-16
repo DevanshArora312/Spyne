@@ -2,15 +2,17 @@ import { useEffect,useState } from "react";
 import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
-import { setMyCars } from "../redux/slices/cars";
 import { setToken } from "../redux/slices/auth";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
+import CarCard from "../components/CarCard"
 const MyCars = () => {
-    const carsData = useSelector(state => state.cars.mycars);
     const [text,setText] = useState("");
     const token = useSelector(state => state.auth.token);
     const [isLogged,setLogged] = useState(false);
-    const [cars,setCarsIn] = useState(carsData);
+    const [cars,setCarsIn] = useState(null);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(()=>{
         fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/isLoggedIn`,{method:"GET",headers:{"Authorization" : "Bearer " + token}})
@@ -23,20 +25,41 @@ const MyCars = () => {
             } else{
                 setLogged(false);
                 dispatch(setToken(null));
+                toast.info('Login to access your saved cars!', {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
             }
         })
         .catch(err=> {
             console.log("here",err.message);
         })
-    },[token,dispatch])
+    },[token,dispatch,navigate])
     useEffect(()=>{
-        fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/my-cars`)
+        toast.onChange(v => {
+            if(v.status == "removed" & v.type == 'info'){
+                navigate("/login");
+            }
+        })
+        return()=>{
+            toast.onChange(undefined)
+        }
+    },[navigate])
+    useEffect(()=>{
+        fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/my-cars`,{method:"GET",headers:{"Authorization" : "Bearer " + token}})
         .then(res => {
             return res.json();
         })
         .then(data => {
+            console.log(data)
             if(data.success){
-                dispatch(setMyCars(data.data));
+                setCarsIn(data.data)
             } else{
                 // navigate('/login')
             }
@@ -44,31 +67,40 @@ const MyCars = () => {
         .catch(err=> {
             console.log("here",err.message);
         })
-    },[dispatch])
+    },[dispatch,token])
     useEffect(()=>{
         if(!cars) return;
-        const newData = cars.filter(one => one.contains(text));
-        setCarsIn(newData)
+        // const newData = cars.filter(one => one.contains(text));
+        // setCarsIn(newData)
     },[text,cars])
     return ( 
         <div className="w-screen overflow-x-hidden">
         <NavBar isLogged={isLogged} text={text} setText={setText}/>
-        <div className="text-3xl flex flex-col justify-center items-start px-[15%] pt-20 w-full">
+        <div className="text-2xl flex flex-col justify-center items-start px-[15%] pt-20 w-full">
             <h1 className="pb-10 font-semibold">My Cars!</h1>
-            {
-                cars && cars.map( (el,index) => {
-                    return (
-                        <Link to = {`/todos/${el._id}`} key={index}>
-                        <div className={`${el.liked ? 'border-r-red-500 border-solid border-r-8' : ""} w-[55vw] flex flex-col rounded-lg hover:shadow-xl shadow-black gap-4 p-5`} >
-                            <h2 className="text-red-500">{el.title}</h2>
-                            <h6 className="text-[20px] opacity-80">Written By: {el.writtenBy} </h6>
-                        </div>
-                        </Link>
-                    )
-                })
-            }
+            <div className="grid justAbovexl:grid-cols-3 md:grid-cols-2 grid-cols-1 2xl:grid-cols-4 gap-x-6 gap-y-8">
+                {
+                    cars && cars.map( (el,index) => {
+                        return (
+                            <Link to = {`/cars/${el._id}`} key={index}>
+                                <CarCard title={el.title} desc={el.desc} tags={el.tags}/>
+                            </Link>
+                        )
+                    })
+                }
+            </div>
             {!cars && <div className="text-sm opacity-90 ">Loading....</div>}
         </div>
+        <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                draggable
+                theme="dark"
+            />
         </div>
     );
 }

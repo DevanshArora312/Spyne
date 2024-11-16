@@ -58,6 +58,9 @@ const Signup = () => {
         style={{background:"url(/login-bg.jpg)",backgroundSize:"cover",filter:"brightness(70%)"}}
         className='absolute top-0 left-0 w-screen h-screen '
         />
+        <Link to="/" className='text-white text-[20px] underline absolute top-0 left-0 p-5 bg-black/50 w-full h-auto'>
+            Back to Home
+        </Link>
         <div className= 'min-w-[280px] z-10 w-[40%] flex flex-col px-4 py-8 justify-center items-center backdrop-blur-md bg-white/10 rounded-2xl gap-y-10'>
             <h1 className='sm:text-[30px] text-[20px] text-white'>Register a new account!</h1>
             <form className='w-full h-full flex flex-col items-center justify-between gap-y-10' onSubmit={submitHandler}>

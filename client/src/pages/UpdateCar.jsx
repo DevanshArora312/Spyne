@@ -5,6 +5,9 @@ import { useParams,useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setToken } from "../redux/slices/auth";
+import ImageSlider from "../components/ImageSlider";
+import logo1 from "../assets/smth.jpg"
+
 const UpdateCar = () => {
     const navigate = useNavigate();
     const token = useSelector(state => state.auth.token)
@@ -15,6 +18,8 @@ const UpdateCar = () => {
     const {id} = useParams();
     const [isLogged,setLogged] = useState(false);
     const dispatch = useDispatch();
+    const imgs = [logo1,logo1,logo1,logo1,logo1,logo1,logo1];
+    
     useEffect(()=>{
         fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/isLoggedIn`,{method:"GET",headers:{"Authorization" : "Bearer " + token}})
         .then(res => {
@@ -33,7 +38,7 @@ const UpdateCar = () => {
         })
     },[token,dispatch])
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/get-todo/${id}`, {method: "GET" , headers : {"Authorization" : "Bearer "+token}})
+        fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/get-car/${id}`, {method: "GET" , headers : {"Authorization" : "Bearer "+token}})
         .then(res => {
             return res.json();
         })
@@ -44,7 +49,7 @@ const UpdateCar = () => {
     },[id,token])
     const updateHandler = async (e) => {
         e.preventDefault();
-        fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/update-todo/${id}`, {method: "PUT" , headers : {"Content-Type" : "application/json","Authorization":'Bearer ' + token} , body:JSON.stringify({formData})})
+        fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/update-car/${id}`, {method: "PUT" , headers : {"Content-Type" : "application/json","Authorization":'Bearer ' + token} , body:JSON.stringify({formData})})
         .then (res =>{
             return res.json()
         })
@@ -74,6 +79,9 @@ const UpdateCar = () => {
             }
 
         }).catch(err => {
+            if(err.message == "t2 is not a function"){
+                return;
+            }
             toast.error(`Some Error Occured! ${err.message}`, {
                 position: "top-right",
                 autoClose: 1000,
@@ -96,7 +104,7 @@ const UpdateCar = () => {
     }
     useEffect(()=>{
         toast.onChange(v => {
-            if(v.status === "removed" && v.type === 'success'){
+            if(v.status == "removed" && v.type == 'success'){
                 navigate("/");
             }
         })
@@ -108,12 +116,15 @@ const UpdateCar = () => {
         <div className="w-full h-full">
             <NavBar isLogged={isLogged} show={false}/>
             <h1 className="text-2xl px-[15%] my-5 mt-20">
-                Update a Task!
+                Edit Car Info!
             </h1>
+            <div className="w-full sm:px-[15%] px-[8%]">
+                <ImageSlider imgs={imgs} />
+            </div>
             <form className="text-xl w-full flex flex-col gap-10 py-10 px-[10%] justify-center items-center" onSubmit={updateHandler}>
                 <input className="sm:min-w-[0px] min-w-[200px] rounded-lg border-2 focus:outline-none p-2 w-2/3" placeholder="Enter Title" id ="title" name="title" value={formData.title} onChange={changeHandler}/>
-                <input className="sm:min-w-[0px] min-w-[200px] rounded-lg border-2 focus:outline-none p-2  w-2/3" placeholder="Written by" id ="writtenBy" name="writtenBy" value={formData.writtenBy} onChange={changeHandler}/>
-                <textarea className="sm:min-w-[0px] min-w-[200px] text-md rounded-lg border-2 min-h-[300px] focus:outline-none p-2 resize-none w-2/3" placeholder="Enter Body" id ="body" name="body" value={formData.body} onChange={changeHandler}/>
+                <input className="sm:min-w-[0px] min-w-[200px] rounded-lg border-2 focus:outline-none p-2  w-2/3" placeholder="Written by" id ="tags" name="tags" value={formData.tags} onChange={changeHandler}/>
+                <textarea className="sm:min-w-[0px] min-w-[200px] text-md rounded-lg border-2 min-h-[300px] focus:outline-none p-2 resize-none w-2/3" placeholder="Enter description" id ="desc" name="desc" value={formData.desc} onChange={changeHandler}/>
                 <input type="submit" className="rounded-xl min-w-[100px] text-white bg-black cursor-pointer px-5 py-3 hover:opacity-70"/>
             </form>
             <ToastContainer

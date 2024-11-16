@@ -2,16 +2,14 @@ import { useEffect,useState } from "react";
 import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
-import { setCars } from "../redux/slices/cars";
 import { setToken } from "../redux/slices/auth";
 import CarCard from "../components/CarCard";
 
 const Home = () => {
-    const carsData = useSelector(state => state.cars.cars);
     const [text,setText] = useState("");
     const token = useSelector(state => state.auth.token);
     const [isLogged,setLogged] = useState(false);
-    const [cars,setCarsIn] = useState(carsData);
+    const [cars,setCarsIn] = useState(null);
     const dispatch = useDispatch();
     useEffect(()=>{
         fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/isLoggedIn`,{method:"GET",headers:{"Authorization" : "Bearer " + token}})
@@ -37,24 +35,15 @@ const Home = () => {
         })
         .then(data => {
             if(data.success){
-                dispatch(setCars(data.data));
+                setCarsIn(data.data)
             } else{
                 // navigate('/login')
             }
         })
+        
         .catch(err=> {
             console.log("here",err.message);
         })
-        dispatch(setCars([ 
-            {_id:1,title:"one",desc:"MINE Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est, itaque.",tags:["khushi","best","girl"]},
-            {_id:2,title:"one",desc:"MINE Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est, itaque.",tags:["khushi","best","girl"]},
-            {_id:3,title:"one",desc:"MINE Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est, itaque.",tags:["khushi","best","girl"]},
-            {_id:4,title:"one",desc:"MINE Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est, itaque.",tags:["khushi","best","girl"]},
-            {_id:1,title:"one",desc:"MINE Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est, itaque.",tags:["khushi","best","girl"]},
-            {_id:2,title:"one",desc:"MINE Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est, itaque.",tags:["khushi","best","girl"]},
-            {_id:3,title:"one",desc:"MINE Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est, itaque.",tags:["khushi","best","girl"]},
-            {_id:4,title:"one",desc:"MINE Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est, itaque.",tags:["khushi","best","girl"]}
-        ]))
     },[dispatch])
     useEffect(()=>{
         if(!cars) return;
