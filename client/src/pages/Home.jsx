@@ -69,8 +69,9 @@ const Home = () => {
                 }
             </div>
             {!cars && 
-                <div className="text-sm opacity-90 ">
-                    <CarCard/>
+                <div className="text-[30px] opacity-90 flex justify-center items-center">
+                    Cars will appear here.........
+                    Add some cars now!
                 </div>
             }
         </div>
